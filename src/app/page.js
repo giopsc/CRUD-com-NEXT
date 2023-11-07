@@ -1,95 +1,67 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client"
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import { FaEdit, FaTrash } from 'react-icons/fa'
+
 
 export default function Home() {
+
+  const [produtos, setProdutos] = useState([])
+  // Carrega quando a página é carregada
+
+  useEffect(()=>{
+    fetch(`http://localhost:5000/produto`)
+    .then(resp=> resp.json())
+    .then(resp=> setProdutos(resp))
+    .catch(error=>console.error(error))
+  },[]) // Array vazio significa que SÓ É CARREGADO quando a página é carregada
+
+  const handleDelete = (id)=>{
+    fetch(`http://localhost:5000/produto/${id}`,{
+      method: 'delete'  
+    })
+    .then(window.location = "/") // Recarrega a página após deletar um produto.
+    .catch(error=>console.error(error))
+  }
+
+
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <main className="lista">
+      <h1>Lista de Produtos</h1>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      <Link href={`/incluir/0`}>Incluir produto</Link> 
+      {/* Criar lógica para que, se o parâmetro for 0, criar produto */}
+      <table>
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Quantidade</th>
+            <th>Preço</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            produtos.map(prod => (
+              <tr key={prod.id}>
+                <td>{prod.titulo}</td>
+                <td>{prod.quantidade}</td>
+                <td>R$ {parseFloat(prod.preco).toFixed(2)}</td>
+                <td>
+                  <Link href={`/incluir/${prod.id}`}> <FaEdit/>Editar</Link>
+                  <button onClick={handleDelete.bind(this, prod.id)}> <FaTrash/> Excluir</button>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={4} >Produtos vindo do Servidor</td>
+          </tr>
+        </tfoot>        
+      </table>
+    </main>    
   )
 }

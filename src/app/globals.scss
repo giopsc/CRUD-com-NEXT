@@ -1,0 +1,59 @@
+.lista {
+    width: 70%;
+    margin: auto;
+
+    h1 {
+        text-align: center;
+    }
+
+    a {
+        text-decoration: none;
+        padding: 10px 15px;
+        margin-bottom: 20px;
+        background-color: yellowgreen;
+        color: white;
+        display: inline-block;
+    }
+
+    table {
+        width: 100%;
+        margin: auto;
+
+        thead {
+            tr {
+                background-color: darkblue;
+                color: white;
+                th {
+                    padding: 10px;
+                }
+            }
+        }
+
+        tbody {
+            & tr:nth-child(2n) {
+                // Linhas ficam com cor intercalada - Branco e cinza
+                background-color: #ccc;
+            }
+
+            tr td button {
+                color: red;
+                background: none;
+                margin-bottom: 5px;
+                border: none;
+            }
+
+            tr td a {
+                background: none;
+                margin-bottom: 5px;
+                color: blue;
+            }
+        }
+
+        tfoot tr td {
+            text-align: center;
+            background-color: #333;
+            color: white;
+        }
+
+    }
+}

@@ -1,0 +1,23 @@
+{
+  "produto": [
+    {
+      "id": 1,
+      "titulo": "Teclado sem fio",
+      "quantidade": 5,
+      "preco": 120.99
+    },
+    {
+      "titulo": "Joystick",
+      "quantidade": "15",
+      "preco": "150.99",
+      "id": 2
+    }
+  ],
+  "cliente": [
+    {
+      "id": 1,
+      "nome": "Luis",
+      "cpf": "123.654.65-85"
+    }
+  ]
+}
